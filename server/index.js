@@ -1,9 +1,16 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import http from 'http';
 import { Server as SocketServer } from 'socket.io'
-import chatRouter from './routes/chatRouter.js';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
+
+import chatRouter from './routes/chatRouter.js';
 import usersRouter from './routes/usersRouter.js';
 
 const app = express();
@@ -14,7 +21,7 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE']
 }))
 
-mongoose.connect('mongodb+srv://sebaactis:Carp1910@chat-ws-cluster.vcheogo.mongodb.net/ChatWS')
+mongoose.connect(process.env.MONGO_DB_URL)
 
 const io = new SocketServer(server);
 
@@ -29,11 +36,24 @@ io.on('connection', socket => {
     })
 })
 
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGO_DB_URL,
+        mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
+        ttl: 15
+    })
+    ,
+    secret: 'secretWS',
+    resave: true,
+    saveUninitialized: true
+}))
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cookieParser());
+
 app.use('/api/chats', chatRouter);
 app.use('/api/users', usersRouter);
-
 
 server.listen(8080, () => console.log('Listening on port 8080'));
 

@@ -68,7 +68,7 @@ const Chat = () => {
 
     return (
         <main className='h-screen text-white flex flex-col items-center justify-center px-20'>
-            <section className="bg-zinc-800 h-5/6 relative w-4/12">
+            <section className="bg-zinc-800 h-5/6 relative w-9/12">
                 <ul ref={messageListRef} className="scroll-container overflow-hidden overflow-y-scroll scroll-smooth h-5/6 pb-5 px-2">
                     {messages.map((message, i) => {
                         return (
