@@ -4,6 +4,7 @@ import { Server as SocketServer } from 'socket.io'
 import chatRouter from './routes/chatRouter.js';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import usersRouter from './routes/usersRouter.js';
 
 const app = express();
 const server = http.createServer(app);
@@ -31,6 +32,7 @@ io.on('connection', socket => {
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use('/api/chats', chatRouter);
+app.use('/api/users', usersRouter);
 
 
 server.listen(8080, () => console.log('Listening on port 8080'));

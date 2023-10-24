@@ -36,8 +36,6 @@ const Chat = () => {
                 messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
             }
         }, 200)
-
-
     }
 
     useEffect(() => {
