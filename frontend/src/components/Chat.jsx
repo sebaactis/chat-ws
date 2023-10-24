@@ -17,6 +17,15 @@ const Chat = () => {
             from: 'Me'
         }
 
+        fetch('http://localhost:8080/api/chats', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newMessage)
+        })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(err => console.log(err))
+
         socket.emit('message', message);
         receiveMessages(newMessage);
 
@@ -30,6 +39,24 @@ const Chat = () => {
 
 
     }
+
+    useEffect(() => {
+        const obtenerMensajes = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/api/chats')
+                const data = await response.json();
+                setMessages(data.payload)
+
+                console.log(messages);
+            }
+            catch (err) {
+                console.log(err);
+            }
+        }
+
+        obtenerMensajes();
+
+    }, [])
 
     useEffect(() => {
         socket.on('chat', mensaje => receiveMessages(mensaje));
