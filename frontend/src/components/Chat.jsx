@@ -44,8 +44,6 @@ const Chat = () => {
                 const response = await fetch('http://localhost:8080/api/chats')
                 const data = await response.json();
                 setMessages(data.payload)
-
-                console.log(messages);
             }
             catch (err) {
                 console.log(err);

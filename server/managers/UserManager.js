@@ -1,5 +1,5 @@
-import { createHash, isValidPassword } from "../../utils.js";
 import daoUsers from "../daos/daoUsers.js";
+import { createHash, isValidPassword } from "../utils.js";
 
 class UserManager {
     constructor() {
