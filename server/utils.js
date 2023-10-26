@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-const key = process.env.PRIVATE_KEY
+const key = 'WS-KEY'
 
 export const createHash = async (password) => { return await bcrypt.hashSync(password, 10) }
 

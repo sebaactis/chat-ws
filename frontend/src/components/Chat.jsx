@@ -9,12 +9,15 @@ const Chat = () => {
     const [messages, setMessages] = useState([]);
     const messageListRef = useRef(null);
 
+    const user = localStorage.getItem('user')
+
     const handleSubmit = (e) => {
+
         e.preventDefault();
 
         const newMessage = {
             body: message,
-            from: 'Me'
+            from: user
         }
 
         fetch('http://localhost:8080/api/chats', {
@@ -58,6 +61,7 @@ const Chat = () => {
         socket.on('chat', mensaje => receiveMessages(mensaje));
     }, [])
 
+
     const receiveMessages = (messageObj) => {
         console.log(messageObj)
 
@@ -70,7 +74,7 @@ const Chat = () => {
                 <ul ref={messageListRef} className="scroll-container overflow-hidden overflow-y-scroll scroll-smooth h-5/6 pb-5 px-2">
                     {messages.map((message, i) => {
                         return (
-                            <li className={`my-3 p-2 table text-sm rounded-md ${message.from === 'Me' ? 'bg-sky-700 ml-auto' : 'bg-black'}`} key={i}>
+                            <li className={`my-3 p-2 table text-sm rounded-md ${message.from === user ? 'bg-sky-700 ml-auto' : 'bg-black'}`} key={i}>
 
                                 <span className="block text-xs font-bold pb-1">
                                     {message.from}

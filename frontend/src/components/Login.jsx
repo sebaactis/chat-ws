@@ -1,11 +1,16 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
+import { useNavigate } from 'react-router-dom';
+import { TokenContext } from "../context/tokenContext";
 
 const Login = () => {
+
+    const navigate = useNavigate();
+    const { setAccessToken } = useContext(TokenContext)
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const userObj = {
@@ -13,7 +18,30 @@ const Login = () => {
             password
         }
 
-        console.log(userObj);
+        try {
+            const response = await fetch('http://localhost:8080/api/users/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userObj)
+            })
+
+            const responseParse = await response.json();
+
+            if (response.status === 200) {
+                localStorage.setItem('token', responseParse.data.token)
+                localStorage.setItem('user', responseParse.data.username)
+                setAccessToken(true);
+                navigate('/')
+            } else {
+                console.log("ERROR")
+            }
+
+        }
+
+        catch (e) {
+            console.error(e);
+
+        }
     }
 
 

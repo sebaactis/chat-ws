@@ -21,7 +21,19 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE']
 }))
 
-mongoose.connect(process.env.MONGO_DB_URL)
+mongoose.connect('mongodb+srv://sebaactis:Carp1910@chat-ws-cluster.vcheogo.mongodb.net/ChatWS')
+
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: 'mongodb+srv://sebaactis:Carp1910@chat-ws-cluster.vcheogo.mongodb.net/ChatWS',
+        mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
+        ttl: 15
+    })
+    ,
+    secret: 'secretWS',
+    resave: true,
+    saveUninitialized: true
+}))
 
 const io = new SocketServer(server);
 
@@ -36,17 +48,7 @@ io.on('connection', socket => {
     })
 })
 
-app.use(session({
-    store: MongoStore.create({
-        mongoUrl: process.env.MONGO_DB_URL,
-        mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
-        ttl: 15
-    })
-    ,
-    secret: 'secretWS',
-    resave: true,
-    saveUninitialized: true
-}))
+
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
