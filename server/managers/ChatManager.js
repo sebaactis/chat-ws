@@ -15,6 +15,11 @@ class ChatManager {
         const newMensaje = await this.dao.create(mensaje);
         return newMensaje;
     }
+
+    async deleteAll() {
+        await this.dao.deleteAll();
+        return 'Users deleted'
+    }
 }
 
 export default ChatManager;

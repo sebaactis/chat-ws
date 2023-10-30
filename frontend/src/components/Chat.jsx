@@ -9,10 +9,9 @@ const Chat = () => {
     const [messages, setMessages] = useState([]);
     const messageListRef = useRef(null);
 
-    const user = localStorage.getItem('user');
     const token = localStorage.getItem('token');
+    const user = localStorage.getItem('user')
 
-    console.log(token, user);
 
     const handleSubmit = (e) => {
 
@@ -20,19 +19,20 @@ const Chat = () => {
 
         const newMessage = {
             body: message,
-            from: user
+            from: user,
+            use: 'messageItem'
         }
 
         fetch('http://localhost:8080/api/chats', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
             body: JSON.stringify(newMessage)
         })
             .then(response => response.json())
             .then(data => console.log(data))
             .catch(err => console.log(err))
 
-        socket.emit('message', message);
+        socket.emit('message', newMessage);
         receiveMessages(newMessage);
 
         setMessage('');
@@ -44,10 +44,23 @@ const Chat = () => {
         }, 200)
     }
 
+    const handleRemove = async () => {
+        const response = await fetch('http://localhost:8080/api/chats', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
+        })
+
+        setMessages([])
+
+        console.log('BORRADO', response);
+    }
+
     useEffect(() => {
         const obtenerMensajes = async () => {
             try {
-                const response = await fetch('http://localhost:8080/api/chats')
+                const response = await fetch('http://localhost:8080/api/chats', {
+                    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
+                })
                 const data = await response.json();
                 setMessages(data.payload)
             }
@@ -57,6 +70,7 @@ const Chat = () => {
         }
         obtenerMensajes();
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
@@ -93,7 +107,9 @@ const Chat = () => {
                     <input className="border-2 border-zync-500 py-2 w-full text-black rounded-md" type='text' onChange={(e) => setMessage(e.target.value)} value={message} />
                     <button className="bg-green-800 p-3 rounded-md font-bold"> Enviar </button>
                 </form>
+
             </section>
+            <button onClick={handleRemove} className="bg-red-800 p-3 mt-5 rounded-md font-bold"> Vaciar chats </button>
         </main>
     )
 }
