@@ -19,10 +19,16 @@ export const addChat = async (req, res) => {
 
     const payload = {
         body: data.body,
-        from: data.from
+        from: data.from,
+        use: data.use
     }
 
     const mensaje = await manager.create(payload);
 
     res.send({ result: 'success', payload: mensaje });
+}
+
+export const deleteChats = async (req, res) => {
+    await manager.deleteAll();
+    res.status(200).json({ result: 'success', payload: 'Deleted'})
 }

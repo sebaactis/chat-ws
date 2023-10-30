@@ -11,6 +11,12 @@ class daoChats {
         const newMensaje = mensajesModel.create(mensaje);
         return newMensaje;
     }
+
+    async deleteAll() {
+        const mensajes = mensajesModel.deleteMany({ 'use': 'messageItem' })
+        console.log(mensajes);
+        return 'Users deleted'
+    }
 }
 
 export default daoChats;

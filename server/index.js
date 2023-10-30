@@ -26,7 +26,7 @@ mongoose.connect('mongodb+srv://sebaactis:Carp1910@chat-ws-cluster.vcheogo.mongo
 app.use(session({
     store: MongoStore.create({
         mongoUrl: 'mongodb+srv://sebaactis:Carp1910@chat-ws-cluster.vcheogo.mongodb.net/ChatWS',
-        mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
+        mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
         ttl: 15
     })
     ,
@@ -38,17 +38,16 @@ app.use(session({
 const io = new SocketServer(server);
 
 io.on('connection', socket => {
-    console.log(`User connected ${socket.id}`);
 
     socket.on('message', (body) => {
+
+        console.log(body);
         socket.broadcast.emit('chat', {
-            body,
-            from: socket.id.slice(6)
+            body: body.body,
+            from: body.from
         });
     })
 })
-
-
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
