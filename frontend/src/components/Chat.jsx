@@ -9,7 +9,10 @@ const Chat = () => {
     const [messages, setMessages] = useState([]);
     const messageListRef = useRef(null);
 
-    const user = localStorage.getItem('user')
+    const user = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+
+    console.log(token, user);
 
     const handleSubmit = (e) => {
 
@@ -52,7 +55,6 @@ const Chat = () => {
                 console.log(err);
             }
         }
-
         obtenerMensajes();
 
     }, [])
@@ -63,8 +65,6 @@ const Chat = () => {
 
 
     const receiveMessages = (messageObj) => {
-        console.log(messageObj)
-
         setMessages((state) => [...state, messageObj]);
     }
 

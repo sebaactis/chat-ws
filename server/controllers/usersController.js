@@ -1,7 +1,5 @@
-import { set } from "mongoose";
 import UserManager from "../managers/UserManager.js";
 import { generateToken, isValidPassword } from "../utils.js";
-import { Cookie } from "express-session";
 
 const manager = new UserManager();
 
@@ -13,7 +11,7 @@ export const login = async (req, res) => {
      const passwordCheck = await isValidPassword(userLogin, data.password);
         if (!passwordCheck) return 'Password invalid';
 
-        const token = await generateToken(userLogin.username)
+        const token = generateToken(userLogin.username)
 
         req.session.accessToken = token
         req.session.user = userLogin.username
