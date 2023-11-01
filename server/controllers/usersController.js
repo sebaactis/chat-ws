@@ -8,25 +8,25 @@ export const login = async (req, res) => {
 
     const userLogin = await manager.login(data);
 
-     const passwordCheck = await isValidPassword(userLogin, data.password);
-        if (!passwordCheck) return 'Password invalid';
+    const passwordCheck = await isValidPassword(userLogin, data.password);
+    if (!passwordCheck) return 'Password invalid';
 
-        const token = generateToken(userLogin.username)
+    const token = generateToken(userLogin.username)
 
-        req.session.accessToken = token
-        req.session.user = userLogin.username
+    req.session.accessToken = token
+    req.session.user = userLogin.username
 
-        res.cookie('accessToken', token, {
-            maxAge: 10000,
-            httpOnly: true
-        })
+    res.cookie('accessToken', token, {
+        maxAge: 10000,
+        httpOnly: true
+    })
 
-        const user = {
-            username: userLogin.username,
-            token: token
-        }
+    const user = {
+        username: userLogin.username,
+        token: token
+    }
 
-    res.status(200).json({status: 'Login successful', data: user});
+    res.status(200).json({ data: user });
 }
 
 export const register = async (req, res) => {
@@ -36,6 +36,18 @@ export const register = async (req, res) => {
 
     console.log(newUser);
 
-    res.status(201).json({status: "Register successfully", data: newUser})
+    res.status(201).json({ status: "Register successfully", data: newUser })
 
+}
+
+export const logout = async (req, res) => {
+
+    req.session.destroy(err => {
+        if (err) {
+            return res.json({ message: 'Logout failed' });
+        }
+
+        res.send({ message: 'Logout successfull' });
+    });
+    
 }

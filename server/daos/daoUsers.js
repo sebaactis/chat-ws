@@ -12,10 +12,6 @@ class daoUsers {
         return user;
     }
 
-    async login() {
-
-    }
-
     async register(user) {
         const newUser = await usersModel.create(user)
         return newUser;

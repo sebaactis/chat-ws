@@ -1,9 +1,13 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useContext } from 'react';
 import { io } from 'socket.io-client'
+import { TokenContext } from '../context/tokenContext';
+import { AiOutlineSend } from "react-icons/ai";
 
 const socket = io('/');
 
 const Chat = () => {
+
+    const { setAccessToken } = useContext(TokenContext)
 
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
@@ -55,6 +59,19 @@ const Chat = () => {
         console.log('BORRADO', response);
     }
 
+    const closeSession = async () => {
+        const response = await fetch('http://localhost:8080/api/users/logout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
+        })
+
+        console.log(await response.json());
+
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        setAccessToken(false)
+    }
+
     useEffect(() => {
         const obtenerMensajes = async () => {
             try {
@@ -84,13 +101,13 @@ const Chat = () => {
 
     return (
         <main className='h-screen text-white flex flex-col items-center justify-center px-20'>
-            <section className="bg-zinc-800 h-5/6 relative w-9/12">
+            <section className="sectionChat h-4/6 relative w-8/12">
                 <ul ref={messageListRef} className="scroll-container overflow-hidden overflow-y-scroll scroll-smooth h-5/6 pb-5 px-2">
                     {messages.map((message, i) => {
                         return (
-                            <li className={`my-3 p-2 table text-sm rounded-md ${message.from === user ? 'bg-sky-700 ml-auto' : 'bg-black'}`} key={i}>
+                            <li className={`my-3 p-2 table text-sm rounded-md ${message.from === user ? 'bg-rose-950 ml-auto' : 'bg-neutral-500'}`} key={i}>
 
-                                <span className="block text-xs font-bold pb-1">
+                                <span className="block font-bold pb-1">
                                     {message.from}
                                 </span>
 
@@ -104,12 +121,14 @@ const Chat = () => {
 
                 <form className="flex gap-3 mt-10 absolute bottom-0 left-0 right-0 p-6" onSubmit={handleSubmit}>
 
-                    <input className="border-2 border-zync-500 py-2 w-full text-black rounded-md" type='text' onChange={(e) => setMessage(e.target.value)} value={message} />
-                    <button className="bg-green-800 p-3 rounded-md font-bold"> Enviar </button>
+                    <input className="inputChat" type='text' onChange={(e) => setMessage(e.target.value)} value={message} />
+                    <button className="bg-green-800 p-3 rounded-full font-bold"> <AiOutlineSend /> </button>
                 </form>
 
             </section>
             <button onClick={handleRemove} className="bg-red-800 p-3 mt-5 rounded-md font-bold"> Vaciar chats </button>
+            <button onClick={closeSession} className="bg-red-800 p-3 mt-5 rounded-md font-bold"> Cerrar Sesion </button>
+
         </main>
     )
 }

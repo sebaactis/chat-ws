@@ -32,7 +32,7 @@ app.use(session({
     ,
     secret: 'secretWS',
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: false
 }))
 
 const io = new SocketServer(server);
