@@ -67,7 +67,7 @@ const Login = () => {
     return (
         <div className="h-screen flex justify-center content-center">
 
-            <form onSubmit={handleSubmit} className="formLogin h-4/6 w-4/12 rounded-xl mt-40 flex flex-col gap-2 justify-center content-center">
+            <form onSubmit={handleSubmit} className="formLogin h-4/6 w-4/12 rounded-xl mt-24 flex flex-col gap-2 justify-center content-center">
                 <h1 className="text-white mx-auto font-bold text-3xl mb-5"> Login </h1>
                 <label className="labelForm" htmlFor="username"> Usuario </label>
                 <input onChange={(e) => setUsername(e.target.value)} value={username} className="inputForm" type="text" name="username" />

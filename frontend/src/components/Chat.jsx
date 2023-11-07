@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, useContext } from 'react';
 import { io } from 'socket.io-client'
 import { TokenContext } from '../context/tokenContext';
 import { AiOutlineSend } from "react-icons/ai";
+import Swal from 'sweetalert2';
 
 const socket = io('/');
 
@@ -49,23 +50,38 @@ const Chat = () => {
     }
 
     const handleRemove = async () => {
-        const response = await fetch('http://localhost:8080/api/chats', {
+        await fetch('http://localhost:8080/api/chats', {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
         })
 
         setMessages([])
 
-        console.log('BORRADO', response);
+        Swal.fire({
+            title: 'Chats eliminados',
+            icon: 'success',
+            iconColor: '#0e8c3c',
+            confirmButtonColor: '#0e8c3c',
+            timer: 2000,
+            timerProgressBar: true
+        })
     }
 
     const closeSession = async () => {
-        const response = await fetch('http://localhost:8080/api/users/logout', {
+        await fetch('http://localhost:8080/api/users/logout', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
         })
 
-        console.log(await response.json());
+        Swal.fire({
+            title: 'Sesion cerrada',
+            icon: 'success',
+            iconColor: '#0e8c3c',
+            confirmButtonColor: '#0e8c3c',
+            timer: 2000,
+            timerProgressBar: true
+        })
+
 
         localStorage.removeItem('token')
         localStorage.removeItem('user')
@@ -106,7 +122,7 @@ const Chat = () => {
 
                     {messages.map((message, i) => {
                         return (
-                            <li className={`my-3 p-2 table text-sm rounded-md ${message.from === user ? 'bg-rose-950 ml-auto' : 'bg-neutral-500'}`} key={i}>
+                            <li className={`my-3 p-2 table text-sm rounded-md ${message.from === user ? 'bg-teal-800 ml-auto' : 'bg-neutral-500'}`} key={i}>
 
                                 <span className="block font-bold pb-1">
                                     {message.from}
@@ -119,7 +135,7 @@ const Chat = () => {
                         )
                     })}
                 </ul>
-                
+
                 <form className="flex gap-3 mt-10 absolute bottom-0 left-0 right-0 p-6" onSubmit={handleSubmit}>
 
                     <input className="inputChat" type='text' onChange={(e) => setMessage(e.target.value)} value={message} />
@@ -127,8 +143,8 @@ const Chat = () => {
                 </form>
 
             </section>
-            <button onClick={handleRemove} className="bg-red-800 p-3 mt-5 rounded-md font-bold"> Vaciar chats </button>
-            <button onClick={closeSession} className="bg-red-800 p-3 mt-5 rounded-md font-bold"> Cerrar Sesion </button>
+            <button onClick={handleRemove} className="bg-indigo-900 transition ease-in-out hover:scale-105 duration-100 hover:bg-indigo-700  p-3 mt-5 rounded-xl font-bold"> Vaciar chats </button>
+            <button onClick={closeSession} className="bg-indigo-900 hover:bg-indigo-700 transition ease-in-out hover:scale-105 duration-100 p-3 mt-5 rounded-xl font-bold"> Cerrar Sesion </button>
 
         </main>
     )
