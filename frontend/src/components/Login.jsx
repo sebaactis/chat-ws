@@ -1,6 +1,7 @@
 import { useContext, useState } from "react"
 import { useNavigate } from 'react-router-dom';
 import { TokenContext } from "../context/tokenContext";
+import Swal from 'sweetalert2'
 
 const Login = () => {
 
@@ -28,12 +29,31 @@ const Login = () => {
             const responseParse = await response.json();
 
             if (response.status === 200) {
+
                 localStorage.setItem('token', responseParse.data.token)
                 localStorage.setItem('user', responseParse.data.username)
                 setAccessToken(true);
-                navigate('/')
+
+                Swal.fire({
+                    title: 'Logueo exitoso',
+                    icon: 'success',
+                    iconColor: '#0e8c3c',
+                    confirmButtonColor: '#0e8c3c',
+                    timer: 2000,
+                    timerProgressBar: true
+                })
             } else {
-                console.log("ERROR")
+                Swal.fire({
+                    title: 'Usuario o contraseña erronea',
+                    icon: 'error',
+                    iconColor: '#a10d0d',
+                    confirmButtonText: 'Cerrar',
+                    confirmButtonColor: '#a10d0d',
+                    timer: 3000,
+                    timerProgressBar: true
+                })
+
+                navigate("/")
             }
 
         }
@@ -47,7 +67,7 @@ const Login = () => {
     return (
         <div className="h-screen flex justify-center content-center">
 
-            <form onSubmit={handleSubmit} className="formLogin h-2/4 w-3/12 rounded-xl mt-40 flex flex-col gap-2 justify-center content-center">
+            <form onSubmit={handleSubmit} className="formLogin h-4/6 w-4/12 rounded-xl mt-40 flex flex-col gap-2 justify-center content-center">
                 <h1 className="text-white mx-auto font-bold text-3xl mb-5"> Login </h1>
                 <label className="labelForm" htmlFor="username"> Usuario </label>
                 <input onChange={(e) => setUsername(e.target.value)} value={username} className="inputForm" type="text" name="username" />

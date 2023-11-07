@@ -12,6 +12,7 @@ import MongoStore from 'connect-mongo';
 
 import chatRouter from './routes/chatRouter.js';
 import usersRouter from './routes/usersRouter.js';
+import errorHandler from './middlewares/errorHandler.js';
 
 const app = express();
 const server = http.createServer(app);
@@ -55,6 +56,8 @@ app.use(cookieParser());
 
 app.use('/api/chats', chatRouter);
 app.use('/api/users', usersRouter);
+
+app.use(errorHandler);
 
 server.listen(8080, () => console.log('Listening on port 8080'));
 

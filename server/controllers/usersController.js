@@ -1,42 +1,56 @@
 import UserManager from "../managers/UserManager.js";
 import { generateToken, isValidPassword } from "../utils.js";
+import registerValidation from "../validations/users/registerValidation.js";
 
 const manager = new UserManager();
 
-export const login = async (req, res) => {
-    const data = req.body
+export const login = async (req, res, next) => {
 
-    const userLogin = await manager.login(data);
+    try {
+        const data = req.body
 
-    const passwordCheck = await isValidPassword(userLogin, data.password);
-    if (!passwordCheck) return 'Password invalid';
+        const userLogin = await manager.login(data);
 
-    const token = generateToken(userLogin.username)
+        const passwordCheck = await isValidPassword(userLogin, data.password);
+        if (!passwordCheck) res.status(400).json({ error: "Password Invalid" });
 
-    req.session.accessToken = token
-    req.session.user = userLogin.username
+        const token = generateToken(userLogin.username)
 
-    res.cookie('accessToken', token, {
-        maxAge: 10000,
-        httpOnly: true
-    })
+        req.session.accessToken = token
+        req.session.user = userLogin.username
 
-    const user = {
-        username: userLogin.username,
-        token: token
+        res.cookie('accessToken', token, {
+            maxAge: 10000,
+            httpOnly: true
+        })
+
+        const user = {
+            username: userLogin.username,
+            token: token
+        }
+        res.status(200).json({ data: user });
+    } catch (e) {
+        console.log(e);
+        next(e);
     }
-    res.status(200).json({ data: user });
+
 
 }
 
-export const register = async (req, res) => {
-    const data = req.body;
+export const register = async (req, res, next) => {
+    try {
+        const data = req.body;
+        await registerValidation.parseAsync(data);
 
-    const newUser = await manager.register(data);
+        const newUser = await manager.register(data);
 
-    console.log(newUser);
+        console.log(newUser);
 
-    res.status(201).json({ status: "Register successfully", data: newUser })
+        res.status(201).json({ status: "Register successfully", data: newUser })
+
+    } catch (e) {
+        next(e);
+    }
 
 }
 
@@ -49,5 +63,5 @@ export const logout = async (req, res) => {
 
         res.send({ message: 'Logout successfull' });
     });
-    
+
 }

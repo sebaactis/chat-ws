@@ -2,14 +2,14 @@ import ChatManager from "../managers/ChatManager.js";
 
 const manager = new ChatManager();
 
-export const getChats = async (req, res) => {
+export const getChats = async (req, res, next) => {
     try {
         const mensajes = await manager.getAll();
         res.status(200).json({ result: 'success', payload: mensajes });
     }
 
-    catch (err) {
-        console.error(err);
+    catch (e) {
+        next(e);
     }
 }
 

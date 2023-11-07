@@ -103,6 +103,7 @@ const Chat = () => {
         <main className='h-screen text-white flex flex-col items-center justify-center px-20'>
             <section className="sectionChat h-4/6 relative w-8/12">
                 <ul ref={messageListRef} className="scroll-container overflow-hidden overflow-y-scroll scroll-smooth h-5/6 pb-5 px-2">
+
                     {messages.map((message, i) => {
                         return (
                             <li className={`my-3 p-2 table text-sm rounded-md ${message.from === user ? 'bg-rose-950 ml-auto' : 'bg-neutral-500'}`} key={i}>
@@ -118,11 +119,11 @@ const Chat = () => {
                         )
                     })}
                 </ul>
-
+                
                 <form className="flex gap-3 mt-10 absolute bottom-0 left-0 right-0 p-6" onSubmit={handleSubmit}>
 
                     <input className="inputChat" type='text' onChange={(e) => setMessage(e.target.value)} value={message} />
-                    <button className="bg-green-800 p-3 rounded-full font-bold"> <AiOutlineSend /> </button>
+                    <button disabled={message === ''} className={message === '' ? 'bg-slate-500 p-3 rounded-full font-bold' : 'bg-green-800 p-3 rounded-full font-bold'}> <AiOutlineSend /> </button>
                 </form>
 
             </section>

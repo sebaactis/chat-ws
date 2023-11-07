@@ -5,8 +5,8 @@ class daoUsers {
     async getOne(username) {
         const user = await usersModel.findOne({ username })
 
-        if(!user) {
-            return 'User not found'
+        if (!user) {
+            throw new Error("User Not Found");
         }
 
         return user;
