@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import Login from './components/Login'
 import { useContext, useEffect } from 'react'
 import { TokenContext } from './context/tokenContext'
+import Register from './components/Register'
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={accessToken ? <Chat /> : <Navigate to="/login" />} />
         <Route exact path="/login" element={accessToken ? <Navigate to="/" /> : <Login />} />
+        <Route exact path="/register" element={<Register />} />
       </Routes>
 
     </BrowserRouter>

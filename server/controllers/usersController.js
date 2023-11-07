@@ -25,8 +25,8 @@ export const login = async (req, res) => {
         username: userLogin.username,
         token: token
     }
+    res.status(200).json({ data: user });
 
-    res.status(200).json({ status: 'Login successful', data: user });
 }
 
 export const register = async (req, res) => {
@@ -38,4 +38,16 @@ export const register = async (req, res) => {
 
     res.status(201).json({ status: "Register successfully", data: newUser })
 
+}
+
+export const logout = async (req, res) => {
+
+    req.session.destroy(err => {
+        if (err) {
+            return res.json({ message: 'Logout failed' });
+        }
+
+        res.send({ message: 'Logout successfull' });
+    });
+    
 }

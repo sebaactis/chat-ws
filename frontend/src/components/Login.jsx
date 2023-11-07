@@ -44,16 +44,23 @@ const Login = () => {
         }
     }
 
-
-
     return (
         <div className="h-screen flex justify-center content-center">
-            <form onSubmit={handleSubmit} className="h-3/4 w-4/12 bg-slate-800 rounded-md mt-16 flex flex-col gap-3 justify-center content-center">
-                <label className="text-center font-bold text-white text-lg" htmlFor="username"> Usuario </label>
-                <input onChange={(e) => setUsername(e.target.value)} value={username} className="h-8 w-56 mx-auto rounded-md" type="text" name="username" />
-                <label className="text-center font-bold text-white text-lg" htmlFor="password"> Password </label>
-                <input onChange={(e) => setPassword(e.target.value)} value={password} className="h-8 w-56 mx-auto rounded-md" type="text" name="password" />
-                <button className="text-white bg-green-800 rounded-md mx-auto h-10 w-40 mt-5 hover:bg-cyan-600 transition-colors"> Ingresar </button>
+
+            <form onSubmit={handleSubmit} className="formLogin h-2/4 w-3/12 rounded-xl mt-40 flex flex-col gap-2 justify-center content-center">
+                <h1 className="text-white mx-auto font-bold text-3xl mb-5"> Login </h1>
+                <label className="labelForm" htmlFor="username"> Usuario </label>
+                <input onChange={(e) => setUsername(e.target.value)} value={username} className="inputForm" type="text" name="username" />
+                <label className="labelForm" htmlFor="password"> Password </label>
+                <input onChange={(e) => setPassword(e.target.value)} value={password} className="inputForm" type="text" name="password" />
+                <button className="buttonLogin"> Ingresar </button>
+                <div className="divRegistrate">
+                    <h2>Si no tienes cuenta:
+                        <span className="font-bold">
+                            <a href="/register"> Regístrate! </a>
+                        </span>
+                    </h2>
+                </div>
             </form>
         </div>
     )

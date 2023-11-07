@@ -12,18 +12,93 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300&display=swap');
 
 body {
-  background-color: #05031f;
+  background: url('../public/fondo.jpg')no-repeat;
+  background-size: cover;
 }
 
 /* Estilos para la barra de desplazamiento */
 .scroll-container::-webkit-scrollbar {
-  width: 10px; /* Ancho de la barra de desplazamiento */
+  width: 5px;
+  
 }
 
 .scroll-container::-webkit-scrollbar-thumb {
-  background: #717171; /* Color del pulgar de la barra de desplazamiento */
+  background: #ae6767; /* Color del pulgar de la barra de desplazamiento */
 }
 
 .scroll-container::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Color del fondo de la barra de desplazamiento */
+  background: transparent; /* Color del fondo de la barra de desplazamiento */
+}
+
+
+
+.formLogin {
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(15px);
+}
+
+.inputForm {
+  width: 300px;
+  margin: 0 auto;
+  border-bottom: 2px solid white;
+  background: transparent;
+  color: white;
+  font-size: 1.1rem;
+}
+
+.inputForm:focus {
+  outline: none
+}
+
+
+.labelForm {
+  color: white;
+  font-weight: bold;
+  margin-left: 5.2rem;
+  margin-top: 1rem;
+}
+
+.buttonLogin {
+  width: 65%;
+  background-color: rgb(255, 255, 255);
+  margin: 0 auto;
+  margin-top: 2rem;
+  border-radius: 40px;
+  padding: 0.8rem;
+  font-size: 1.1rem;
+  font-weight: bolder;
+  transition: all 0.2s ease;
+}
+
+.buttonLogin:hover {
+  background-color: #a9a9a9;
+}
+
+.divRegistrate {
+  margin: 0 auto;
+  margin-top: 0.5rem;
+  color: white;
+  font-size: 1.05rem;
+}
+
+.sectionChat {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(15px);
+  border-radius: 40px;
+  padding: 1rem;
+}
+
+.inputChat {
+  width: 100%;
+  margin: 0 auto;
+  border-bottom: 2px solid white;
+  background: transparent;
+  color: white;
+  font-size: 1.1rem;
+}
+
+.inputChat:focus {
+  outline: none
 }

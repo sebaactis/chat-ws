@@ -18,9 +18,16 @@ class UserManager {
 
     async register(user) {
 
+        const { username, password, confPassword } = user;
+
+        const userCheck = await this.dao.getOne(username)
+        if (!userCheck) return 'User does not exist'
+
+        if (password !== confPassword) return 'Password and confirm password do not match'
+
         const payload = {
-            ...user,
-            password: await createHash(user.password)
+            username,
+            password: await createHash(password)
         }
         const newUser = await this.dao.register(payload)
 

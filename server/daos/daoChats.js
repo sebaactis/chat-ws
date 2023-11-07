@@ -13,8 +13,7 @@ class daoChats {
     }
 
     async deleteAll() {
-        const mensajes = mensajesModel.deleteMany({ 'use': 'messageItem' })
-        console.log(mensajes);
+        const mensajes = await mensajesModel.deleteMany({ use: "messageItem" })
         return 'Users deleted'
     }
 }
