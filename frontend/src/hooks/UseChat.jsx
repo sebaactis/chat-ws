@@ -1,10 +1,11 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import Swal from "sweetalert2";
 import { TokenContext } from "../context/tokenContext";
 import { io } from 'socket.io-client'
+import useSwal from "./useSwal";
 
-const UseChat = () => {
+const useChat = () => {
 
+    const { swal } = useSwal();
     const socket = io('/');
     const token = localStorage.getItem('token');
     const user = localStorage.getItem('user');
@@ -22,14 +23,7 @@ const UseChat = () => {
                 headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
             });
 
-            Swal.fire({
-                title: 'Sesion cerrada',
-                icon: 'success',
-                iconColor: '#0e8c3c',
-                confirmButtonColor: '#0e8c3c',
-                timer: 2000,
-                timerProgressBar: true
-            });
+            swal('Session cerrada', 'success', '#0e8c3c', '#0e8c3c', 2000, true);
 
             localStorage.removeItem('token');
             localStorage.removeItem('user');
@@ -47,14 +41,7 @@ const UseChat = () => {
 
         setMessages([])
 
-        Swal.fire({
-            title: 'Chats eliminados',
-            icon: 'success',
-            iconColor: '#0e8c3c',
-            confirmButtonColor: '#0e8c3c',
-            timer: 2000,
-            timerProgressBar: true
-        })
+        swal('Chats eliminados', 'success', '#0e8c3c', '#0e8c3c', 2000, true)
     }
 
     const obtenerMensajes = async () => {
@@ -118,4 +105,4 @@ const UseChat = () => {
     return { closeSession, handleRemove, messages, setMessages, obtenerMensajes, receiveMessages, handleSubmit, message, setMessage, messageListRef };
 }
 
-export default UseChat;
+export default useChat;

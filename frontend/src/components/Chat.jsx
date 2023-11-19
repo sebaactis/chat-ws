@@ -1,14 +1,9 @@
 import { AiOutlineSend } from "react-icons/ai";
-import UseChat from '../hooks/useChat';
+import useChat from '../hooks/useChat';
 
 const Chat = () => {
-
-
-    const { closeSession, handleRemove, messages, message, setMessage, handleSubmit, messageListRef } = UseChat();
-
     const user = localStorage.getItem('user');
-
-    
+    const { closeSession, handleRemove, messages, message, setMessage, handleSubmit, messageListRef } = useChat();
 
     return (
         <main className='h-screen text-white flex flex-col items-center justify-center px-20'>

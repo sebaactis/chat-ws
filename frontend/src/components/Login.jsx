@@ -1,10 +1,11 @@
 import { useContext, useState } from "react"
 import { useNavigate } from 'react-router-dom';
 import { TokenContext } from "../context/tokenContext";
-import Swal from 'sweetalert2'
+import useSwal from "../hooks/useSwal";
 
 const Login = () => {
 
+    const { swal } = useSwal();
     const navigate = useNavigate();
     const { setAccessToken } = useContext(TokenContext)
 
@@ -34,33 +35,15 @@ const Login = () => {
                 localStorage.setItem('user', responseParse.data.username)
                 setAccessToken(true);
 
-                Swal.fire({
-                    title: 'Logueo exitoso',
-                    icon: 'success',
-                    iconColor: '#0e8c3c',
-                    confirmButtonColor: '#0e8c3c',
-                    timer: 2000,
-                    timerProgressBar: true
-                })
-            } else {
-                Swal.fire({
-                    title: 'Usuario o contraseña erronea',
-                    icon: 'error',
-                    iconColor: '#a10d0d',
-                    confirmButtonText: 'Cerrar',
-                    confirmButtonColor: '#a10d0d',
-                    timer: 3000,
-                    timerProgressBar: true
-                })
+                swal('Logueo exitoso', 'success', '#0e8c3c', '#0e8c3c', 2000, true);
 
+            } else {
+                swal('Usuario o contraseña erronea', 'error', '#a10d0d', '#a10d0d', 3000, true)
                 navigate("/")
             }
-
         }
-
         catch (e) {
             console.error(e);
-
         }
     }
 
