@@ -5,6 +5,9 @@ const Chat = () => {
     const user = localStorage.getItem('user');
     const { closeSession, handleRemove, messages, message, setMessage, handleSubmit, messageListRef } = useChat();
 
+
+
+
     return (
         <main className='h-screen text-white flex flex-col items-center justify-center px-20'>
             <section className="sectionChat h-4/6 relative w-8/12">

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { TokenContext } from "../context/tokenContext";
 import { io } from 'socket.io-client'
-import useSwal from "./useSwal";
+import useSwal from './useSwal';
 
 const useChat = () => {
 
@@ -14,7 +14,6 @@ const useChat = () => {
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState('');
     const messageListRef = useRef(null);
-
 
     const closeSession = async () => {
         try {
@@ -98,6 +97,22 @@ const useChat = () => {
 
     useEffect(() => {
         socket.on('chat', mensaje => receiveMessages(mensaje));
+    }, [])
+
+    useEffect(() => {
+        const checkToken = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/api/users/refreshToken', {
+                    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
+                })
+                const data = await response.json();
+                console.log(data)
+            }
+            catch (err) {
+                console.log(err);
+            }
+        }
+        checkToken();
     }, [])
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
