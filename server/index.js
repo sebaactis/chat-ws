@@ -28,7 +28,7 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl: 'mongodb+srv://sebaactis:Carp1910@chat-ws-cluster.vcheogo.mongodb.net/ChatWS',
         mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-        ttl: 15
+        ttl: 10000
     })
     ,
     secret: 'secretWS',

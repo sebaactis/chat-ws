@@ -28,3 +28,24 @@ export const authToken = (req, res, next) => {
         next();
     })
 }
+
+export const verifyToken = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    const token = authHeader.split(' ')[1];
+
+    console.log(token);
+
+    if(!token) {
+        return res.status(401).json({mensaje: "El token no existe o no es valido"})
+    }
+
+    try {
+        const decodedToken = jwt.verify(token, key)
+        req.user = decodedToken.user
+        next();
+    }
+
+    catch(err) {
+        return res.status(401).json({ mensaje: 'Token inválido o expirado' });
+    }
+}

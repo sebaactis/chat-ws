@@ -1,6 +1,9 @@
 import UserManager from "../managers/UserManager.js";
 import { generateToken, isValidPassword } from "../utils.js";
 import registerValidation from "../validations/users/registerValidation.js";
+import jwt from 'jsonwebtoken'
+
+const key = 'WS-KEY';
 
 const manager = new UserManager();
 
@@ -64,4 +67,23 @@ export const logout = async (req, res) => {
         res.send({ message: 'Logout successfull' });
     });
 
+}
+
+export const refreshToken = async (req, res) => {
+    const authHeader = req.headers.authorization;
+    const token = authHeader.split(' ')[1];
+
+    if (!token) {
+        return res.status(401).json({ mensaje: 'Token no proporcionado' });
+    }
+
+    try {
+        const decodedToken = jwt.decode(token, key)
+        return res.status(200).json({ token: decodedToken })
+    }
+
+    catch (err) {
+
+        return res.status(404).json({error: err})
+    }
 }
