@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useRef, useState } from "react";
 import { TokenContext } from "../context/tokenContext";
 import { io } from 'socket.io-client'
@@ -7,7 +8,7 @@ const useChat = () => {
 
     const { swal } = useSwal();
     const socket = io('/');
-    const token = localStorage.getItem('token');
+    let token = localStorage.getItem('token');
     const user = localStorage.getItem('user');
 
     const { setAccessToken } = useContext(TokenContext);
@@ -49,6 +50,7 @@ const useChat = () => {
                 headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
             })
             const data = await response.json();
+            console.log("mensajes")
             setMessages(data.payload)
         }
         catch (err) {
@@ -75,7 +77,7 @@ const useChat = () => {
             .then(data => console.log(data))
             .catch(err => console.log(err))
 
-        
+
         socket.emit('message', newMessage);
 
         setMessage('');
@@ -103,17 +105,21 @@ const useChat = () => {
         const checkToken = async () => {
             try {
                 const response = await fetch('http://localhost:8080/api/users/refreshToken', {
-                    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
+                    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                    method: 'POST'
                 })
                 const data = await response.json();
-                console.log(data)
+
+                if (data.check) {
+                    token = localStorage.setItem('token', data.token);
+                }
             }
             catch (err) {
                 console.log(err);
             }
         }
         checkToken();
-    }, [])
+    }, [token])
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
 

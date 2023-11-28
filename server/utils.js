@@ -8,7 +8,7 @@ export const createHash = async (password) => { return await bcrypt.hashSync(pas
 export const isValidPassword = async (user, password) => { return await bcrypt.compare(password, user.password) }
 
 export const generateToken = (user) => {
-    const token = jwt.sign({ user }, key, { expiresIn: '24h' })
+    const token = jwt.sign({ user }, key, { expiresIn: '15m' })
     return token
 }
 
@@ -33,10 +33,8 @@ export const verifyToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
     const token = authHeader.split(' ')[1];
 
-    console.log(token);
-
-    if(!token) {
-        return res.status(401).json({mensaje: "El token no existe o no es valido"})
+    if (!token) {
+        return res.status(401).json({ mensaje: "El token no existe o no es valido" })
     }
 
     try {
@@ -45,7 +43,7 @@ export const verifyToken = (req, res, next) => {
         next();
     }
 
-    catch(err) {
+    catch (err) {
         return res.status(401).json({ mensaje: 'Token inválido o expirado' });
     }
 }

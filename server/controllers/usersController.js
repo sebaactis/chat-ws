@@ -79,11 +79,19 @@ export const refreshToken = async (req, res) => {
 
     try {
         const decodedToken = jwt.decode(token, key)
-        return res.status(200).json({ token: decodedToken })
+        const tiempoActual = Math.floor(Date.now() / 1000);
+        const tiempoRestante = decodedToken.exp - tiempoActual;
+
+        if (tiempoRestante < 50) {
+            const token = generateToken(decodedToken.user)
+            return res.status(200).json({ token: token, check: true })
+        } else {
+            return res.status(200).json({ message: 'Token Activo', check: false })
+        }
     }
 
     catch (err) {
 
-        return res.status(404).json({error: err})
+        return res.status(404).json({ error: err })
     }
 }
